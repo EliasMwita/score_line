@@ -3,22 +3,22 @@ import 'package:carousel_slider/carousel_slider.dart' as carousel_slider;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:provider/provider.dart';
-import '../classes/app_state.dart';
-import '../classes/player.dart';
-import 'nav_bar.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:scoreline/providers/scores_providers.dart';
+import 'package:scoreline/domain/models/player.dart';
+import 'package:scoreline/widgets/nav_bar.dart';
 
-class Favourites extends StatefulWidget {
+class Favourites extends ConsumerStatefulWidget {
   const Favourites({Key? key, required this.title}) : super(key: key);
   final String title;
 
   @override
-  State<Favourites> createState() => _FavouritesState();
+  ConsumerState<Favourites> createState() => _FavouritesState();
 }
 
-class _FavouritesState extends State<Favourites> {
+class _FavouritesState extends ConsumerState<Favourites> {
   bool _showSearchField = false;
-  carousel_slider.CarouselController buttonCarouselController = carousel_slider.CarouselController();
+  carousel_slider.CarouselSliderController buttonCarouselController = carousel_slider.CarouselSliderController();
   late Future<List<Player>> futurePlayers;
 
   @override
@@ -29,7 +29,7 @@ class _FavouritesState extends State<Favourites> {
 
   @override
   Widget build(BuildContext context) {
-    final appState = Provider.of<AppState>(context);
+    final selectedIndex = ref.watch(navigationProvider);
     return Scaffold(
       backgroundColor: Colors.black26,
       drawer: NavBar(),
@@ -96,7 +96,7 @@ class _FavouritesState extends State<Favourites> {
                     final playersWithImages = snapshot.data!
                         .where((player) =>
                             player.strThumb != null &&
-                            player.strThumb.isNotEmpty)
+                            player.strThumb!.isNotEmpty)
                         .toList();
 
                     // Display only the first 8 players
@@ -156,9 +156,9 @@ class _FavouritesState extends State<Favourites> {
           activeColor: Colors.orange,
           tabBackgroundColor: Colors.black,
           gap: 9,
-          selectedIndex: appState.selectedIndex,
+          selectedIndex: selectedIndex,
           onTabChange: (index) {
-            appState.setSelectedIndex(index);
+            ref.read(navigationProvider.notifier).setIndex(index);
             if (index == 0) {
               context.go('/');
             } else if (index == 1) {

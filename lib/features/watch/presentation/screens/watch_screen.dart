@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:provider/provider.dart';
-import '../classes/app_state.dart';
-import 'nav_bar.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:scoreline/providers/scores_providers.dart';
+import 'package:scoreline/widgets/nav_bar.dart';
 
-class Watch extends StatefulWidget {
+class Watch extends ConsumerStatefulWidget {
   const Watch({Key? key, required this.title}) : super(key: key);
   final String title;
 
   @override
-  State<Watch> createState() => _MyHomePageState();
+  ConsumerState<Watch> createState() => _WatchState();
 }
 
-class _MyHomePageState extends State<Watch> {
+class _WatchState extends ConsumerState<Watch> {
   bool _showSearchField = false;
 
   @override
   Widget build(BuildContext context) {
 
-    final appState = Provider.of<AppState>(context);
+    final selectedIndex = ref.watch(navigationProvider);
 
     return Scaffold(
       backgroundColor: Colors.black26,
@@ -77,9 +77,9 @@ class _MyHomePageState extends State<Watch> {
           activeColor: Colors.orange,
           tabBackgroundColor: Colors.black,
           gap: 9,
-          selectedIndex: appState.selectedIndex,
+          selectedIndex: selectedIndex,
           onTabChange: (index) {
-            appState.setSelectedIndex(index);
+            ref.read(navigationProvider.notifier).setIndex(index);
             if (index == 0) {
               context.go('/');
             } else if (index == 1) {
