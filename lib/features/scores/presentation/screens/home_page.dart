@@ -25,8 +25,6 @@ class _MyHomePageState extends ConsumerState<MyHomePage>
   final ScrollController _scrollController = ScrollController();
   final PageController _featuredController = PageController(viewportFraction: 0.9);
   int _currentFeaturedIndex = 0;
-  int _selectedNavIndex = 0;
-  double _scrollOffset = 0.0;
 
   @override
   void initState() {
@@ -42,7 +40,6 @@ class _MyHomePageState extends ConsumerState<MyHomePage>
     )..repeat(reverse: true);
 
     _scrollController.addListener(() {
-      setState(() => _scrollOffset = _scrollController.offset);
     });
   }
 
@@ -918,7 +915,6 @@ class _MyHomePageState extends ConsumerState<MyHomePage>
   Widget _buildMatchCardFromEvent(Event event, int index, bool isDark, bool isLive) {
     final homeScore = event.intHomeScore;
     final awayScore = event.intAwayScore;
-    final status = event.strStatus;
     final time = event.strProgress ?? event.strTime;
     final competition = event.strLeague;
 
@@ -1174,7 +1170,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage>
                           children: [
                             Expanded(
                               child: Text(
-                                event.strAwayTeam ?? 'Away',
+                                event.strAwayTeam,
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w700,
