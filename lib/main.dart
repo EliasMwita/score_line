@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'screens/soccer_splash_screen.dart';
 import 'package:scoreline/features/scores/presentation/screens/home_page.dart';
 import 'package:scoreline/features/favourites/presentation/screens/favourite_screen.dart';
 import 'package:scoreline/features/watch/presentation/screens/watch_screen.dart';
@@ -19,7 +20,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final router = GoRouter(
+      initialLocation: '/splash',
       routes: [
+        GoRoute(
+          path: '/splash',
+          builder: (context, state) => SoccerSplashScreen(
+            onComplete: () => context.go('/'),
+          ),
+        ),
         GoRoute(
           path: '/',
           builder: (context, state) => const MyHomePage(title: 'ScoreLine'),
@@ -47,3 +55,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+
+//0762378600-

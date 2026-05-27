@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-
 class Team {
   final String idTeam;
   final String strTeam;
@@ -45,40 +42,4 @@ class Team {
     required this.strTeamFanart4,
     required this.strTeamBanner,
   });
-
-  factory Team.fromJson(Map<String, dynamic> json) {
-    return Team(
-      idTeam: json['idTeam'],
-      strTeam: json['strTeam'],
-      strAlternate: json['strAlternate'] ?? '',
-      strSport: json['strSport'],
-      strLeague: json['strLeague'],
-      strStadium: json['strStadium'],
-      strStadiumLocation: json['strStadiumLocation'],
-      strWebsite: json['strWebsite'],
-      strFacebook: json['strFacebook'],
-      strTwitter: json['strTwitter'],
-      strInstagram: json['strInstagram'],
-      strDescriptionEN: json['strDescriptionEN'] ?? '',
-      strTeamBadge: json['strTeamBadge'],
-      strTeamJersey: json['strTeamJersey'],
-      strStadiumThumb: json['strStadiumThumb'],
-      strTeamFanart1: json['strTeamFanart1'],
-      strTeamFanart2: json['strTeamFanart2'],
-      strTeamFanart3: json['strTeamFanart3'],
-      strTeamFanart4: json['strTeamFanart4'],
-      strTeamBanner: json['strTeamBanner'],
-    );
-  }
-}
-
-Future<List<Team>> fetchTeams() async {
-  final response = await http.get(Uri.parse('https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t'));
-
-  if (response.statusCode == 200) {
-    final List<dynamic> teamsJson = jsonDecode(response.body)['teams'];
-    return teamsJson.map((json) => Team.fromJson(json)).toList();
-  } else {
-    throw Exception('Failed to load teams');
-  }
 }

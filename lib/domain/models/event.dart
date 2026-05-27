@@ -16,6 +16,7 @@ class Event {
   final String? strVenue;
   final String? strDate;
   final String? strSeason;
+  final String? strCountry;
   final bool isWorldCup;
   final List<MatchEvent> events;
   final List<Player> homeLineup;
@@ -37,6 +38,7 @@ class Event {
     this.strVenue,
     this.strDate,
     this.strSeason,
+    this.strCountry,
     this.isWorldCup = false,
     this.events = const [],
     this.homeLineup = const [],

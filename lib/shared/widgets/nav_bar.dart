@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../providers/navigation_provider.dart';
 
-class NavBar extends StatelessWidget {
+class NavBar extends ConsumerWidget {
   const NavBar({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final selectedNavIndex = ref.watch(navigationProvider);
 
     return Drawer(
       backgroundColor: isDark ? const Color(0xFF1E293B) : Colors.white,
@@ -57,22 +60,32 @@ class NavBar extends StatelessWidget {
             title: Text(
               'Home',
               style: TextStyle(
-                color: isDark ? Colors.white : const Color(0xFF111827),
+                color: selectedNavIndex == 0
+                    ? const Color(0xFFEF4444)
+                    : (isDark ? Colors.white : const Color(0xFF111827)),
                 fontWeight: FontWeight.w600,
               ),
             ),
-            onTap: () => Navigator.pop(context),
+            onTap: () {
+              ref.read(navigationProvider.notifier).setIndex(0);
+              Navigator.pop(context);
+            },
           ),
           ListTile(
             leading: const Icon(Icons.favorite_rounded, color: Color(0xFFEF4444)),
             title: Text(
               'Favorites',
               style: TextStyle(
-                color: isDark ? Colors.white : const Color(0xFF111827),
+                color: selectedNavIndex == 1
+                    ? const Color(0xFFEF4444)
+                    : (isDark ? Colors.white : const Color(0xFF111827)),
                 fontWeight: FontWeight.w600,
               ),
             ),
-            onTap: () => Navigator.pop(context),
+            onTap: () {
+              ref.read(navigationProvider.notifier).setIndex(1);
+              Navigator.pop(context);
+            },
           ),
           ListTile(
             leading: const Icon(Icons.settings_rounded, color: Color(0xFFEF4444)),
